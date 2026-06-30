@@ -1,0 +1,57 @@
+# ==============================
+# Python
+# ==============================
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# ==============================
+# Virtual Environments
+# ==============================
+venv/
+.venv/
+env/
+
+# ==============================
+# IDE
+# ==============================
+.vscode/
+.idea/
+
+# ==============================
+# Operating System
+# ==============================
+.DS_Store
+Thumbs.db
+
+# ==============================
+# Environment Variables
+# ==============================
+.env
+
+# ==============================
+# Logs
+# ==============================
+*.log
+
+# ==============================
+# Jupyter
+# ==============================
+.ipynb_checkpoints/
+
+# ==============================
+# Large Generated Data
+# ==============================
+data/candidates.jsonl
+data/embeddings.parquet
+data/features.parquet
+data/team_submission.csv
+
+# Keep sample Job Description
+!data/job_description.txt
+
+# ==============================
+# Local Backup
+# ==============================
+backup/
