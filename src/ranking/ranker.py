@@ -24,8 +24,10 @@ def rank_candidates(
 ):
 
     scores = []
-    reasons = []
 
+    # ----------------------------------------
+    # PASS 1: Compute scores for all candidates
+    # ----------------------------------------
     for _, candidate in df.iterrows():
 
         semantic_score = cosine_similarity(
@@ -39,22 +41,43 @@ def rank_candidates(
             parsed_jd
         )
 
-        reason = generate_reason(candidate)
-
         scores.append(final_score)
-        reasons.append(reason)
 
     ranked = df.copy()
-
     ranked["score"] = scores
-    ranked["reasoning"] = reasons
 
     ranked = ranked.sort_values(
         by="score",
         ascending=False
     )
 
+    # Keep only Top K
+    ranked = ranked.head(top_k).copy()
+
+    # ----------------------------------------
+    # PASS 2: Generate explanations only for Top K
+    # ----------------------------------------
+    reasons = []
+
+    for _, candidate in ranked.iterrows():
+
+        semantic_score = cosine_similarity(
+            job_embedding,
+            candidate["embedding"]
+        )
+
+        reason = generate_reason(
+            candidate,
+            parsed_jd,
+            semantic_score,
+            candidate["score"],
+        )
+
+        reasons.append(reason)
+
+    ranked["reasoning"] = reasons
+
     ranked = ranked.reset_index(drop=True)
     ranked["rank"] = ranked.index + 1
 
-    return ranked.head(top_k)
+    return ranked
